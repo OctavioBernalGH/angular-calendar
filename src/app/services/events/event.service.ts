@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, effect } from '@angular/core';
 import { Event } from '../../models/event.model';
 
 @Injectable({
@@ -11,9 +11,12 @@ export class EventService {
 
   constructor() {
     this.loadFromLocalStorage();
+    effect(() => {
+      localStorage.setItem('calendar_events', JSON.stringify(this.eventSignal()));
+    });
   }
 
-  private save(){
+  private save() {
     localStorage.setItem('events', JSON.stringify(this.eventSignal()));
   }
 
